@@ -1,0 +1,200 @@
+﻿@page
+@model StudentsManager.Mvc.Pages.GradingModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_FlexLayout";
+}
+<h2 class="text-center">Текущ Контрол</h2>
+<p class="text-center">
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Формиране
+    </a>
+</p>
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        <ol class="text-center">
+            <li>макс 7 точки от направени тестове</li>
+            <li>макс 7 точки от предадени домашни</li>
+            <li>макс 3 точки от 1во контролно</li>
+            <li>макс 3 точки от 2ро контролно</li>
+            <li>10 точки за направен пробен изпит с чатбот</li>
+            <li>макс 20 точки от курсов проект</li>
+        </ol>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Име</th>
+        <th scope="col">Фак №</th>
+
+        <th scope="col">Въведение в JS</th>
+        <th scope="col">Дом #1</th>
+
+        <th scope="col">Advance JS</th>
+        <th scope="col">Дом #2</th>
+
+        <th scope="col">Async JS</th>
+        <th scope="col">Дом #3</th>
+
+        <th scope="col">Cordova</th>
+        <th scope="col">Дом #4</th>
+
+        <th scope="col">React</th>
+        <th scope="col">Дом #5</th>
+
+        <th scope="col">React Native</th>
+        <th scope="col">Дом #6</th>
+
+        <th scope="col">Архитек.</th>
+        <th scope="col">Дом #7</th>
+
+        <th scope="col">Контрол #1</th>
+        <th scope="col">Контрол #2</th>
+        
+        <th scope="col">Чатбот</th>
+        <th scope="col">К.П.</th>
+
+        <th scope="col">Общ р.</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var studentGrade in Model.StudentGrades)
+    {
+        <tr>
+            <input type="hidden" value="@studentGrade.StudentId" name="id"/>
+            <td>@studentGrade.StudentName</td>
+            <td>@studentGrade.StudentFacultyNumber</td>
+            <td>
+                @studentGrade.IntroScore т.
+            </td>
+            <td>
+                @if (string.IsNullOrEmpty(studentGrade.IntroHomework))
+                {
+                    <span>Без д.</span>
+                }
+                else
+                {
+                    <a href="@studentGrade.IntroHomework" target="_blank" target="_blank">Линк</a>
+                }
+            </td>
+            <td>
+                @studentGrade.AdvanceScore т.
+            </td>
+            <td>
+                @if (string.IsNullOrEmpty(studentGrade.AdvanceHomework))
+                {
+                    <span>Без д.</span>
+                }
+                else
+                {
+                    <a href="@studentGrade.AdvanceHomework" target="_blank">Линк</a>
+                }
+            </td>
+            <td>
+                @studentGrade.AsyncScore т.
+            </td>
+            <td>
+                @if (string.IsNullOrEmpty(studentGrade.AsyncHomework))
+                {
+                    <span>Без д.</span>
+                }
+                else
+                {
+                    <a href="@studentGrade.AsyncHomework" target="_blank">Линк</a>
+                }
+            </td>
+
+            <td>
+                @studentGrade.CordovaScore т.
+            </td>
+            <td>
+                @if (string.IsNullOrEmpty(studentGrade.CordovaHomework))
+                {
+                    <span>Без д.</span>
+                }
+                else
+                {
+                    <a href="@studentGrade.CordovaHomework" target="_blank">Линк</a>
+                }
+            </td>
+
+            <td>
+                @studentGrade.ReactScore т.
+            </td>
+            <td>
+                @if (string.IsNullOrEmpty(studentGrade.ReactHomework))
+                {
+                    <span>Без д.</span>
+                }
+                else
+                {
+                    <a href="@studentGrade.ReactHomework" target="_blank">Линк</a>
+                }
+            </td>
+
+            <td>
+                @studentGrade.NativeScore т.
+            </td>
+            <td>
+                @if (string.IsNullOrEmpty(studentGrade.NativeHomework))
+                {
+                    <span>Без д.</span>
+                }
+                else
+                {
+                    <a href="@studentGrade.NativeHomework" target="_blank">Линк</a>
+                }
+            </td>
+
+            <td>
+                @studentGrade.ArchitectureScore т.
+            </td>
+            <td>
+                @if (string.IsNullOrEmpty(studentGrade.ArchitectureHomework))
+                {
+                    <span>Без д.</span>
+                }
+                else
+                {
+                    <a href="@studentGrade.ArchitectureHomework" target="_blank">Линк</a>
+                }
+            </td>
+            <td>
+                @studentGrade.FirstExaminationScore т.
+            </td>
+
+            <td>
+                @studentGrade.SecondExaminationScore т.
+            </td>
+            
+            <td>
+                @if (studentGrade.HasExaminationAnswer)
+                {
+                        <span>10 т.</span>
+                }
+                else
+                {
+                        <span>X</span>
+                }
+            </td>
+                        
+            <td>
+                @if (studentGrade.HasCoursework)
+                {
+                    <span>@studentGrade.CourseworkScore т.</span>
+                }
+                else
+                {
+                    <span>X</span>
+                }
+            </td>
+
+            <td>
+                @studentGrade.Total т.
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Тестове";
+}
+
+@model IEnumerable<UserTopicResultView>
+
+<section class="section-init-test anim-block">
+    <div class="bg-image" style="background-image: url('./images/test/study.jpg')"></div>
+    <div class="section-box center parallax-elem" data-val="-150" data-move="y">
+        <div class="section-init-test-box anim-elem top">
+            <div class="section-init-test-txt">
+                <h2 class="title-big white">Готов ли си за <strong>теста?</strong></h2>
+                <p class="p-mid white regular">
+                    За да преминеш тест с пълните 10 точки са ти необходими 4 верни отговора.
+                    <br/>
+                    5 точки се дават за 2 верни отговора.
+                </p>
+                @foreach (var result in Model)
+                {
+                    <div class="btn-box">
+                        <a asp-controller="Test" asp-action="Start" asp-route-topicId="@result.TopicId" class="btn-mid btn-red ">
+                            @result.TopicDescription
+                            @if (result.Passed)
+                            {
+                                <img src="~/images/icons/checked-white.svg" alt="checked" style="vertical-align: middle"/>
+                            }
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

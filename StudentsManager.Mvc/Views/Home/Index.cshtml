@@ -1,0 +1,52 @@
+﻿@model StudentsManager.Mvc.Domain.Views.Home.CourseExaminationSettingsView
+@{
+    ViewData["Title"] = "Начало";
+}
+
+<section class="section">
+    <div class="intro-test-section fh anim-block">
+        <div class="section-box">
+            <div class="intro-test-txt center">
+                <div class="intro-test-txt-box white-box center anim-elem top-visibility">
+                    <div class="addition-txt-box">
+                        <span class="p-huge lightGrey addition-txt">Добре дошли</span>
+                    </div>
+                    <div class="wrap-txt">
+                        <h3 class="title-big black">в <strong class="red">системата</strong></h3>
+                        <p class="p-large">
+                            на Хибридни Мобилни Приложения
+                        </p>
+                        <div class="curve-box">
+                            <a asp-controller="Test" asp-action="Index" class="btn-big btn-gray">Тестове</a>
+                        </div>
+                        @if (Model.FirstAvailable)
+                        {
+                            <div class="curve-box">
+                                <a href="/FirstExamination" class="btn-big btn-gray">Контролно №1</a>
+                            </div>
+                        }
+                        @if (Model.SecondAvailable)
+                        {
+                            <div class="curve-box">
+                                <a href="/SecondExamination" class="btn-big btn-gray">Контролно №2</a>
+                            </div>
+                        }
+                        @if (Model.SecondAvailable)
+                        {
+                            <div class="curve-box">
+                                <a href="/Coursework" class="btn-big btn-gray">Прикачи Курсова</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="image-item anim-elem left-100">
+                    <div class="boy-image">
+                        <img src="https://atlas-content-cdn.pixelsquid.com/stock-images/cartoon-boy-8JY1YDF-600.jpg" alt="boy" class="template-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_HomeAdviceSectionPartial")

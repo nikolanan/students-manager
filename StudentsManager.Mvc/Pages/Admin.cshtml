@@ -1,0 +1,19 @@
+﻿@page
+@model StudentsManager.Mvc.Pages.AdminModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_FlexLayout";
+}
+
+<div>
+    <h2 class="text-center">Admin</h2>
+</div>
+
+<script>
+    window.onload = (e) => {
+        const password = prompt("Please, enter password:", "Here..");
+        if (password !== "something") {
+            document.write('');
+        }
+    };
+</script>

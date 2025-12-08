@@ -1,0 +1,80 @@
+﻿@page
+@model StudentsManager.Mvc.Pages.HomeworkModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+
+@section Styles{
+    <style>
+        .section-box {
+            padding-right: 0 !important;
+        }
+    </style>
+}
+
+<div class="total-wrap-content">
+    <div class="section-box center parallax-elem" data-val="-150" data-move="y">
+        <p class="p-mid">Моля, прикачвайте по един файл!</p>
+        <table id="homeworks">
+            <tr>
+                <th>Лекция</th>
+                <th>Упражнение</th>
+                <th>Ресурси</th>
+                <th>Мин год. линк</th>
+                <th>Предадено</th>
+                <th>Прикачи</th>
+            </tr>
+            @foreach (var view in Model.HomeworkViews)
+            {
+                <tr style="outline: thin solid">
+                    <td>
+                        @view.TopicDescription
+                    </td>
+                    <td>
+                        <a href="@view.ExerciseFileUrl" target="_blank" class="btn template-btn">Задачи</a>
+                    </td>
+                    <td>
+                        <a href="@view.ResourcesUrl" target="_blank" class="btn template-btn">Ресурси</a>
+                    </td>
+                    <td>
+                        <a href="@view.VideoLinkFromPreviousYear" target="_blank" class="btn template-btn">Линк</a>
+                    </td>
+                    <td>
+                        @if (view.HasHanded)
+                        {
+                            <strong>✓</strong>
+                        }
+                        else
+                        {
+                            <strong>X</strong>
+                        }
+                    </td>
+                    <td>
+                        @if (view.HasHanded)
+                        {
+                            <a href="@view.HomeWorkPath" target="_blank" class="btn template-btn">
+                                Качено Домашно
+                            </a>
+                        }
+                        else
+                        {
+                            <form method="post" enctype="multipart/form-data">
+                                <br/>
+                                <label asp-for="File">Прикачи .zip файл:</label>
+                                <input type="file" asp-for="File"/>
+                                <input type="hidden" asp-for="TopicId" value="@view.TopicId"/>
+                                <input type="hidden" asp-for="TopicTag" value="@view.TopicTag"/>
+                                <br/>
+                                <label asp-for="RepositoryLink">Или линк към код хранилище:</label>
+                                <input type="text" asp-for="RepositoryLink"/>
+                                <br/><br/>
+                                <button type="submit" class="btn btn-big btn-red">Качи</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

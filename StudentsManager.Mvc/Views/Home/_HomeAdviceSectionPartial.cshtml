@@ -1,0 +1,132 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> _signInManager
+@inject UserManager<User> _userManager
+
+@if (_signInManager.IsSignedIn(User))
+{
+    <section class="section">
+        <div class="advice-section fh anim-block">
+            <div class="section-box">
+                <div class="advice-title-wrap anim-elem top">
+                    <h3 class="title-big white">
+                        <strong>Полезни статии</strong>
+                    </h3>
+                </div>
+                <div class="advice-slider-container anim-elem top">
+                    <div class="advice-slider swiper-container slider-swipper" data-items="3" data-items-laptop="2" data-items-mobile="1">
+                        <div class="swiper-wrapper">
+                            <div class="advice-slide swiper-slide">
+                                <div class="addition-txt-box">
+                                    <span class="p-huge lightGrey addition-txt">ПРОЧЕТИ</span>
+                                </div>
+                                <div class="advice-slide-inner">
+                                    <div class="advice-slide-content">
+                                        <div class="advice-slide-content-text">
+                                            <p>
+                                                Бърз преглед на основите: <strong class="red">w3schools<br/></strong>
+                                            </p>
+                                            <a href="https://www.w3schools.bg/" class="abs-item-link" target="_blank"></a>
+                                        </div>
+                                        <div class="item-btn-wrap">
+                                            <a href="https://www.w3schools.bg/" class="wave-btn" target="_blank">
+                                                <span class="wave-btn-text">КЪМ СТАТИЯТА</span>
+                                                <span class="wave"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="advice-slide swiper-slide">
+                                <div class="addition-txt-box">
+                                    <span class="p-huge lightGrey addition-txt">ПРОЧЕТИ</span>
+                                </div>
+                                <div class="advice-slide-inner">
+                                    <div class="advice-slide-content">
+                                        <div class="advice-slide-content-text">
+                                            <p>
+                                                Какво е Apache Cordova ?
+                                            </p>
+                                            <a href="https://cordova.apache.org/" class="abs-item-link" target="_blank"></a>
+                                        </div>
+                                        <div class="item-btn-wrap">
+                                            <a href="https://cordova.apache.org/" class="wave-btn" target="_blank">
+                                                <span class="wave-btn-text">КЪМ СТАТИЯТА</span>
+                                                <span class="wave"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="advice-slide swiper-slide">
+                                <div class="addition-txt-box">
+                                    <span class="p-huge lightGrey addition-txt">ПРОЧЕТИ</span>
+                                </div>
+                                <div class="advice-slide-inner">
+                                    <div class="advice-slide-content">
+                                        <div class="advice-slide-content-text">
+                                            <p>
+                                                Въведение в <strong class="red">AJAX <br/></strong>
+                                            </p>
+                                            <a href="https://bg.education-wiki.com/3939589-what-is-ajax" class="abs-item-link" target="_blank"></a>
+                                        </div>
+                                        <div class="item-btn-wrap">
+                                            <a href="https://bg.education-wiki.com/3939589-what-is-ajax" class="wave-btn" target="_blank">
+                                                <span class="wave-btn-text">КЪМ СТАТИЯТА</span>
+                                                <span class="wave"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="advice-slide swiper-slide">
+                                <div class="addition-txt-box">
+                                    <span class="p-huge lightGrey addition-txt">ПРОЧЕТИ</span>
+                                </div>
+                                <div class="advice-slide-inner">
+                                    <div class="advice-slide-content">
+                                        <div class="advice-slide-content-text">
+                                            <p>
+                                                Engineer in the Angular team at <strong class="red">Google</strong>
+                                            </p>
+                                            <a href="https://blog.mgechev.com/" class="abs-item-link"></a>
+                                        </div>
+                                        <div class="item-btn-wrap">
+                                            <a href="https://blog.mgechev.com/" class="wave-btn">
+                                                <span class="wave-btn-text">КЪМ СТАТИЯТА</span>
+                                                <span class="wave"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="advice-slide swiper-slide">
+                                <div class="addition-txt-box">
+                                    <span class="p-huge lightGrey addition-txt">ПРОЧЕТИ</span>
+                                </div>
+                                <div class="advice-slide-inner">
+                                    <div class="advice-slide-content">
+                                        <div class="advice-slide-content-text">
+                                            <p>
+                                                Pluralsight <strong class="red">technology</strong> blog
+                                            </p>
+                                            <a href="https://www.pluralsight.com/blog/technology" class="abs-item-link"></a>
+                                        </div>
+                                        <div class="item-btn-wrap">
+                                            <a href="https://www.pluralsight.com/blog/technology" class="wave-btn">
+                                                <span class="wave-btn-text">КЪМ СТАТИЯТА</span>
+                                                <span class="wave"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination advice-slider-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

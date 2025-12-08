@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> _signInManager
+@inject UserManager<User> _userManager
+
+@if (_signInManager.IsSignedIn(User))
+{
+    <form asp-area="" asp-controller="Auth" asp-action="Logout" method="post" id="logoutForm">
+        <div class="login-container menu-anim-el">
+            <div class="login-container-inner">
+                <div class="login-btn-wrap">
+                    @{ var userName = _userManager.GetUserName(User); }
+                    <a href="#" onclick="document.getElementById('logoutForm').submit()" class="login btn">
+                        Здравей, @userName -> Изход
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <div class="login-container menu-anim-el">
+        <div class="login-container-inner">
+            <div class="login-btn-wrap">
+                <a asp-controller="Auth" asp-action="Login" class="login btn">Вход/регистрация</a>
+            </div>
+        </div>
+    </div>
+}

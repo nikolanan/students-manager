@@ -1,0 +1,57 @@
+﻿@model Credentials
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<div class="total-wrap-content">
+    <div class="login-section">
+        <div class="main-inner-content-wrap anim-block">
+            <div class="login-title-wrap anim-elem top">
+                <h1 class="title-big">Вход</h1>
+            </div>
+            <div class="login-grid">
+                <div class="login-grid-wrap">
+                    <div class="login-image-item anim-elem bottom">
+                        <div class="bg-image" style="background-image: url('../../images/login/login-step1.jpg')"></div>
+                    </div>
+                    <div class="login-content-item anim-elem top">
+                        <div class="login-content-item-wrap">
+                            <form class="login-form" autocomplete="off" method="post">
+                                <div asp-validation-summary="ModelOnly"></div>
+                                <div class="form-row required">
+                                    <label asp-for="Email" class="label-form-fld">E-mail</label>
+                                    <input asp-for="Email" type="text" class="form-fld" id="email">
+                                    <span asp-validation-for="Email"></span>
+                                    <div class="border-bottom"></div>
+                                    <div class="tooltip-div"></div>
+                                </div>
+                                <div class="form-row required">
+                                    <label asp-for="Password" class="label-form-fld">Парола</label>
+                                    <input asp-for="Password" type="password" class="form-fld" id="password">
+                                    <span asp-validation-for="Password"></span>
+                                    <div class="border-bottom"></div>
+                                </div>
+                                <div class="form-row btn-row">
+                                    <button class="submit-btn" type="submit" class="btn btn-default">ВХОД</button>
+                                </div>
+                            </form>
+                            <div class="login-bottom-row">
+                                <div class="registration-row">
+                                    <span class="text">Нямате профил?</span>
+                                    <a asp-controller="Auth" asp-action="Register" class="registration-link">Регистрирайте се сега</a>
+                                </div>
+                                <div class="registration-row">
+                                    <a asp-controller="Auth" asp-action="ResetPassword" class="registration-link">Забравена парола</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

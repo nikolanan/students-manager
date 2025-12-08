@@ -1,0 +1,29 @@
+﻿@model Error
+@{
+    ViewData["Title"] = "Проблемче";
+}
+
+<div class="total-wrap-content">
+    <section class="section">
+        <div class="chat-bot-section fh anim-block">
+            <div class="section-box">
+                <div class="intro-test-txt center">
+                    <div class="image-item anim-elem top">
+                        <div class="robot-image">
+                            <img src="https://www.clipartkey.com/mpngs/m/43-436442_transparent-problem-solution-clipart-problems-png.png"
+                                 alt="problem"
+                                 class="template-image">
+                        </div>
+                    </div>
+                    <div class="intro-test-txt-box white-box center anim-elem top delay-02">
+                        <div class="wrap-txt">
+                            <h3 class="title-big black">
+                                @Model.Message
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

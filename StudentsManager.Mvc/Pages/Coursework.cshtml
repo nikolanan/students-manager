@@ -1,0 +1,58 @@
+﻿@page
+@model StudentsManager.Mvc.Pages.CourseworkModel
+@{
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+<div class="total-wrap-content">
+    <div class="login-section">
+        <div class="main-inner-content-wrap anim-block">
+            <div class="login-title-wrap anim-elem top">
+                <img src="~/images/coursework/coursework-pic.png" alt="coursework"/>
+            </div>
+            <div class="login-grid">
+                <div class="login-grid-wrap">
+                    <div class="login-content-item anim-elem top">
+                        <div class="login-content-item-wrap">
+                            <form class="login-form" autocomplete="off" method="post">
+                                <div class="form-row required">
+                                    <label asp-for="CourseworkLink" class="label-form-fld">
+                                        Тук може да прикачиш линк към курсовият си проект:
+                                    </label>
+                                    <input asp-for="CourseworkLink" type="text" class="form-fld">
+                                    <span asp-validation-for="CourseworkLink"></span>
+                                    <div class="border-bottom"></div>
+                                    <div class="tooltip-div"></div>
+                                </div>
+                                <div class="form-row btn-row">
+                                    <button class="submit-btn" type="submit">Запиши</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="login-content-item anim-elem top">
+                        <div class="login-content-item-wrap">
+                            <form>
+                                <div class="form-row required">
+                                    <p class="p-md-5">Прикачен:</p>
+                                </div>
+                                <div class="form-row required">
+                                    @if (Model.HasExistingLink)
+                                    {
+                                        <p class="p-md-4">
+                                            <a href="@Model.ExistingLink" target="_blank">
+                                                @Model.ExistingLink
+                                            </a>
+                                        </p>
+                                    }
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

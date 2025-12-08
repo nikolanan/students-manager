@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  azurite:
+    container_name: azurite
+    image: mcr.microsoft.com/azure-storage/azurite
+
+  data:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    
+  studentsmanager.mvc:
+    container_name: studentsmanagermvc
+    image: profjordanov/studentsmanagermvc:8.0
+    build:
+      context: .
+      dockerfile: StudentsManager.Mvc/Dockerfile      

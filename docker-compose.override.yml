@@ -1,0 +1,48 @@
+version: '3.4'
+
+services:
+  azurite:
+    hostname: azurite
+    command: "azurite-blob --loose --blobHost 0.0.0.0 --skipApiVersionCheck"
+    ports: 
+      - "10000:10000"
+    volumes: 
+      - ./cert/azurite:/data
+    networks: 
+      - studentsmanager-network
+
+  data:
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=strongPassword12!@
+    ports: 
+      - "1433:1433"
+    volumes: 
+      - sqldata:/var/opt/mssql 
+    networks: 
+      - studentsmanager-network
+      
+  studentsmanager.mvc:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=StudentsManagerDb;User Id=sa;Password=strongPassword12!@;Encrypt=false;
+      - StorageSettings__AzureConnectionString=UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://azurite
+      - StorageSettings__PathBasis=http://azurite:10000/
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    networks: 
+      - studentsmanager-network
+    depends_on:
+      - data
+      - azurite
+      
+networks:
+    studentsmanager-network:
+
+volumes:
+    sqldata:      

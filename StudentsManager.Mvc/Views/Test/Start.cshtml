@@ -1,0 +1,38 @@
+﻿@model TestViewModel
+
+@{
+    ViewData["Title"] = "Тест";
+}
+
+<div class="total-wrap-content">
+    <section class="section-test-layout anim-block">
+        <div class="main-wrap-content anim-elem top delay-03">
+            <div class="section-test-layout-box cf">
+                <div class="test-col">
+                    <div class="section-test-layout-content">
+
+                        <form action="SubmitAnswers" method="POST" id="test">
+                            <div class="cover-div"></div>
+
+                            @await Html.PartialAsync("_ActiveQuestionSectionPartial", Model.ActiveQuestion)
+
+                            @foreach (var question in Model.FollowQuestions)
+                            {
+                                if (question.Options.First().IsTextOnly)
+                                {
+                                    @await Html.PartialAsync("_TextQuestionSectionPartial", question)
+                                }
+                                else
+                                {
+                                    @await Html.PartialAsync("_ImageQuestionSectionPartial", question)
+                                }
+                            }
+                        </form>
+
+                    </div>
+                </div>
+                <!-- /.col-->
+            </div>
+        </div>
+    </section>
+</div>

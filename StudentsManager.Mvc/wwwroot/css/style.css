@@ -1,0 +1,781 @@
+﻿body, html {
+    margin: 0;
+    padding: 0
+}
+
+.total-wrapper {
+    min-height: 100%;
+    position: relative
+}
+
+.sr-only {
+    font-size: 1px;
+    line-height: 1px;
+    text-indent: -99999px;
+}
+
+.no-m { margin: 0 !important }
+
+.p15 { padding: 0 15px }
+
+*, :active { outline: 0 none }
+
+.anthena { cursor: pointer }
+
+.btn-text {
+    padding: 0 10px;
+    z-index: 2;
+}
+
+.soge-btn-effect {
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.effect-inner {
+    background: #b16f5f;
+    border-radius: 50%;
+    height: 500px;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 500px;
+}
+
+@-webkit-keyframes shake {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0)
+    }
+
+    19% {
+        -webkit-transform: translateX(-40px);
+        transform: translateX(-40px)
+    }
+
+    48% {
+        -webkit-transform: translateX(40px);
+        transform: translateX(40px)
+    }
+
+    60% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0)
+    }
+
+    66% {
+        -webkit-transform: translateX(-20px);
+        transform: translateX(-20px)
+    }
+
+    74% {
+        -webkit-transform: translateX(20px);
+        transform: translateX(20px)
+    }
+
+    80% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0)
+    }
+
+    85% {
+        -webkit-transform: translateX(-10px);
+        transform: translateX(-10px)
+    }
+
+    95% {
+        -webkit-transform: translateX(10);
+        transform: translateX(10)
+    }
+
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0)
+    }
+}
+
+@keyframes shake {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0)
+    }
+
+    19% {
+        -webkit-transform: translateX(-40px);
+        transform: translateX(-40px)
+    }
+
+    48% {
+        -webkit-transform: translateX(40px);
+        transform: translateX(40px)
+    }
+
+    60% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0)
+    }
+
+    66% {
+        -webkit-transform: translateX(-20px);
+        transform: translateX(-20px)
+    }
+
+    74% {
+        -webkit-transform: translateX(20px);
+        transform: translateX(20px)
+    }
+
+    80% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0)
+    }
+
+    85% {
+        -webkit-transform: translateX(-10px);
+        transform: translateX(-10px)
+    }
+
+    95% {
+        -webkit-transform: translateX(10);
+        transform: translateX(10)
+    }
+
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0)
+    }
+}
+
+.soge-shake {
+    -webkit-animation: .6s shake 1;
+    animation: .6s shake 1
+}
+
+.chatbot-page { display: none }
+
+.chatbot-page.active { display: block }
+
+.red { color: #b16f5f }
+
+.soge-face {
+    -o-transition: .4s all;
+    -webkit-transition: .4s all;
+    height: 25%;
+    padding: 30px 0;
+    position: relative;
+    transition: .4s all;
+}
+
+.soge-name {
+    bottom: 0;
+    color: #b16f5f;
+    font-size: 16px;
+    font-weight: 600;
+    height: 30px;
+    left: 0;
+    line-height: 30px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
+.soge-face svg {
+    height: 100%;
+    width: auto;
+}
+
+.soge-answer.disable .soge-btn { cursor: default }
+
+.soge-red { color: #b16f5f }
+
+.soge-question {
+    -ms-flex-direction: column;
+    -ms-flex-pack: center;
+    -o-transition: .4s transform;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+    -webkit-transition: .4s transform;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: column;
+    font-size: 22px;
+    justify-content: center;
+    line-height: 26px;
+    margin: 0 auto;
+    max-width: 1024px;
+    padding: 0 27px;
+    transition: .4s transform;
+}
+
+.soge-young-chatbot {
+    -ms-flex-direction: column;
+    -ms-flex-pack: space-evenly;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: space-evenly;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-evenly;
+    position: relative;
+    text-align: center;
+}
+
+.soge-title {
+    color: #000;
+    font-size: 48px
+}
+
+.soge-answer {
+    -ms-flex-align: start;
+    -ms-flex-direction: row;
+    -ms-flex-pack: center;
+    -webkit-box-align: start;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-box-pack: center;
+    align-items: flex-start;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.soge-input {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 50px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.soge-input, .soge-input label { cursor: text }
+
+.soge-input input {
+    background: 0 0;
+    border: 0 none;
+    padding: 0 15px;
+    position: relative;
+    width: 100%;
+}
+
+.soge-input input.empty:focus ~ label, .soge-input input:focus ~ label, .soge-input label {
+    -o-transition: .4s all;
+    -webkit-transition: .4s all;
+    font-size: 11px;
+    height: 100%;
+    left: 15px;
+    line-height: 1;
+    position: absolute;
+    top: -15px;
+    transition: .4s all
+}
+
+.soge-input input.empty ~ label {
+    font-size: 16px;
+    top: 16px;
+}
+
+.soge-input-line {
+    -o-transition: .25s all;
+    -webkit-transition: .25s all;
+    background: #b2b2b2;
+    bottom: 0;
+    height: 1px;
+    left: 0;
+    position: absolute;
+    transition: .25s all;
+    width: 100%;
+}
+
+.soge-input:active ~ .soge-input-line, .soge-input:focus ~ .soge-input-line, .soge-input:hover ~ .soge-input-line, .soge-select:hover .soge-input-line { background: #b16f5f }
+
+.soge-btn {
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    -o-transition: .25s all;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    -webkit-box-sizing: border-box;
+    -webkit-transition: .25s all;
+    align-items: center;
+    background: #6f6f6f;
+    border: 1px solid #6f6f6f;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    height: 50px;
+    justify-content: center;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: .25s all;
+}
+
+.soge-btn-wrapper {
+    -ms-flex-flow: row nowrap;
+    -ms-flex-pack: center;
+    -ms-flex-preferred-size: 100%;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-box-pack: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-basis: 100%;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+.soge-btn-wrapper.btn-3, .soge-btn-wrapper.btn-n {
+    -ms-flex-flow: column wrap;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    flex-flow: column wrap
+}
+
+.soge-btn-wrapper.btn-2 .soge-btn {
+    margin: 0 10px;
+    width: 130px
+}
+
+@media (min-width: 480px) {
+    .soge-btn-wrapper.btn-2 .soge-btn { margin: 0 27px }
+}
+
+.soge-btn-wrapper.btn-3 .soge-btn, .soge-btn-wrapper.btn-n .soge-btn { margin: 0 27px 15px }
+
+.btn-small { width: 130px }
+
+.btn-medium { width: 152px }
+
+.soge-btn:hover {
+    background: #b16f5f;
+    border-color: #b16f5f;
+    color: #fff;
+}
+
+.soge-btn.active, .soge-btn.prefer {
+    background: #fff;
+    border-color: #b16f5f;
+    color: #fff;
+}
+
+.soge-scale {
+    -ms-flex-flow: row nowrap;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 0 27px;
+    max-width: 500px;
+    position: relative;
+    width: 100%;
+}
+
+.soge-scale-btn {
+    -ms-flex: 1;
+    -o-transition: .25s .4s all;
+    -webkit-box-flex: 1;
+    -webkit-box-sizing: border-box;
+    -webkit-transition: .25s .4s all;
+    background: 0;
+    border: 1px solid #e3e3e3;
+    border-left-width: 0;
+    box-sizing: border-box;
+    flex: 1;
+    height: 20px;
+    left: 0;
+    position: relative;
+    text-align: right;
+    top: 0;
+    transition: .25s .4s all;
+    z-index: 2
+}
+
+.bg-fill {
+    -o-transition: .6s all ease-in;
+    -webkit-transition: .6s all ease-in;
+    background: #b16f5f;
+    height: 20px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: .6s all ease-in;
+    width: 0;
+    z-index: 1
+}
+
+.soge-scale:hover .bg-fill {
+    -o-transition: .25s all ease-out;
+    -webkit-transition: .25s all ease-out;
+    transition: .25s all ease-out
+}
+
+.soge-scale-btn:first-of-type { border-left-width: 1px }
+
+.soge-scale-btn.hover {
+    -o-transition: .25s all;
+    -webkit-transition: .25s all;
+    border-color: #b16f5f;
+    color: #b16f5f;
+    transition: .25s all
+}
+
+.soge-scale-btn-label {
+    -o-transition: .25s .4s all;
+    -webkit-transition: .25s .4s all;
+    color: #e3e3e3;
+    position: relative;
+    text-align: center;
+    top: -28px;
+    transition: .25s .4s all;
+}
+
+.soge-scale:hover .soge-scale-btn-label {
+    -o-transition: .25s all;
+    -webkit-transition: .25s all;
+    transition: .25s all
+}
+
+.soge-scale-btn.hover .soge-scale-btn-label { color: #b16f5f }
+
+.soge-select {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.soge-select select {
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.soge-input-wrapper, .soge-select-wrapper {
+    -ms-flex-flow: column nowrap;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100%;
+    margin: 0 27px;
+    width: 100%;
+}
+
+.soge-select-wrapper .soge-btn {
+    margin: 0 0 15px;
+    width: 100%;
+}
+
+.label-text { padding-left: 15px }
+
+.soge-select .label {
+    -ms-flex-align: center;
+    -ms-flex-flow: row nowrap;
+    -ms-flex-pack: justify;
+    -webkit-box-align: center;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-box-pack: justify;
+    align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-flow: row nowrap;
+    height: 50px;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+
+.caret {
+    background: url(../images/svg/caret.svg) no-repeat 100% 0;
+    background-size: 20px;
+    height: 10px;
+    width: 35px;
+}
+
+.hidden { display: none }
+
+.soge-list, .soge-list li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: relative
+}
+
+.soge-list-wrapper {
+    background: #fff;
+    display: none;
+    left: 0;
+    max-height: 160px;
+    overflow: auto;
+    padding: 0;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    z-index: 10;
+}
+
+.soge-list-wrapper.open { display: block }
+
+.soge-list-wrapper.reverse {
+    bottom: 100%;
+    top: auto;
+}
+
+.soge-list .list-value {
+    -o-transition: .7s all;
+    -webkit-transition: .7s all;
+    background: #fff;
+    cursor: pointer;
+    display: block;
+    padding: 5px 15px;
+    text-align: left;
+    transition: .7s all
+}
+
+.soge-list .list-value:hover {
+    -o-transition: .4s all;
+    -webkit-transition: .4s all;
+    background: #b16f5f;
+    color: #fff;
+    transition: .4s all
+}
+
+.soge-list .soge-input-line {
+    -o-transition-delay: .2s;
+    -webkit-transition-delay: .2s;
+    left: 50%;
+    margin: 0 auto;
+    position: absolute;
+    transition-delay: .2s;
+    width: 0;
+}
+
+.soge-list label:hover ~ .soge-input-line {
+    left: 0;
+    width: 100%;
+}
+
+.soge-circles {
+    bottom: 38px;
+    height: 40px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.circle {
+    -webkit-animation: 1.8s holo-anim infinite ease-in;
+    animation: 1.8s holo-anim infinite ease-in;
+    border: 6px solid #fff;
+    border-radius: 50px;
+    height: 46px;
+    left: 50%;
+    margin-left: -23px;
+    position: absolute;
+    top: 0;
+    width: 46px;
+}
+
+.c1 {
+    -webkit-animation-delay: -.6s;
+    animation-delay: -.6s
+}
+
+.c2 {
+    -webkit-animation-delay: -1.2s;
+    animation-delay: -1.2s
+}
+
+@-webkit-keyframes loading-bouns {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    100% {
+        -webkit-transform: translateY(-7px);
+        transform: translateY(-7px)
+    }
+}
+
+@keyframes loading-bouns {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    100% {
+        -webkit-transform: translateY(-7px);
+        transform: translateY(-7px)
+    }
+}
+
+@-webkit-keyframes holo-anim {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    100% {
+        -webkit-transform: translateY(.1);
+        transform: translateY(.1)
+    }
+}
+
+@keyframes holo-anim {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    100% {
+        -webkit-transform: translateY(.1);
+        transform: translateY(.1)
+    }
+}
+
+.loading circle {
+    -webkit-animation: 360ms loading-bouns infinite alternate ease-in-out;
+    animation: 360ms loading-bouns infinite alternate ease-in-out
+}
+
+.loading circle:nth-child(2) {
+    -webkit-animation-delay: 120ms;
+    animation-delay: 120ms
+}
+
+.loading circle:nth-child(3) {
+    -webkit-animation-delay: 240ms;
+    animation-delay: 240ms
+}
+
+.soge-head svg {
+    left: 50%;
+    margin-left: -57px;
+    margin-top: -42.5px;
+    position: absolute;
+    top: 50%;
+}
+
+.soge-sparks {
+    left: 21px;
+    position: absolute;
+    top: -129px;
+    z-index: 1
+}
+
+@media (min-height: 800px) {
+    .soge-face {
+        height: 38%;
+        padding: 0 0 25px
+    }
+
+    .soge-select-wrapper { position: relative }
+}
+
+@media (min-width: 600px) {
+    .soge-input-wrapper, .soge-select-wrapper {
+        -ms-flex-align: center;
+        -ms-flex-flow: row nowrap;
+        -ms-flex-pack: center;
+        -webkit-box-align: center;
+        -webkit-box-direction: normal;
+        -webkit-box-orient: horizontal;
+        -webkit-box-pack: center;
+        align-items: center;
+        flex-flow: row nowrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .soge-input-wrapper .soge-btn, .soge-select-wrapper .soge-btn {
+        padding: 0 15px;
+        width: 50%;
+    }
+
+    .soge-input-wrapper {
+        -ms-flex-align: start;
+        -webkit-box-align: start;
+        align-items: flex-start
+    }
+
+    .soge-select-wrapper .soge-btn:nth-child(2) { margin: 0 27px }
+
+    .soge-input-wrapper .soge-btn:nth-child(2) { margin-left: 27px }
+
+    .soge-input, .soge-select {
+        margin-bottom: 0;
+        width: 350px;
+    }
+
+    .soge-btn-wrapper.btn-3 {
+        -ms-flex-flow: row wrap;
+        -webkit-box-direction: normal;
+        -webkit-box-orient: horizontal;
+        flex-flow: row wrap;
+        margin: 0 27px;
+        max-width: 900px;
+        width: 100%;
+    }
+
+    .soge-btn-wrapper.btn-n {
+        -ms-flex-flow: row wrap;
+        -webkit-box-direction: normal;
+        -webkit-box-orient: horizontal;
+        flex-flow: row wrap;
+        max-width: 900px;
+        width: 100%
+    }
+
+    .soge-btn-wrapper.btn-n .soge-btn {
+        -ms-flex-preferred-size: calc(100% - 54px);
+        flex-basis: calc(100% - 54px);
+        margin: 0 27px 15px;
+        width: auto
+    }
+
+    .soge-btn-wrapper.btn-3 .soge-btn {
+        -ms-flex-preferred-size: calc(33% - 18px);
+        flex-basis: calc(33% - 18px);
+        margin: 0;
+        margin-bottom: 10px
+    }
+
+    .soge-btn-wrapper.btn-3 .soge-btn:nth-child(2) { margin: 0 27px }
+
+    .soge-name { font-size: 20px }
+
+    .soge-question {
+        font-size: 28px;
+        line-height: 38px
+    }
+}

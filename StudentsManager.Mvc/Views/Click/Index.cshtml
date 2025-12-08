@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Click";
+}
+
+<div class="total-wrap-content">
+    <div class="robot-intro-section">
+        <div class="career-categories-section">
+            <div class="robot-grid">
+                <div class="career-main-wrap">
+                    <div class="categories-grid anim-block">
+                        <div class="categories-image-item">
+                            <div class="categories-robot anim-elem top delay-03">
+                                <img
+                                    src="https://www.pngitem.com/pimgs/m/182-1822816_developer-clipart-hd-png-download.png" alt="pic" class="template-image">
+                                <div class="speech-bubble anim-elem	delay-09">
+                                    <div class="speech-bubble-inner">
+                                        <div class="speech-bubble-bg">
+                                        </div>
+                                        <div class="speech-bubble-text-wrap">
+                                            <span class="speech-bubble-text"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="categories-container-item anim-elem	top">
+                            <div class="categories-container-item-wrap">
+
+                                <div class="robot-text-item">
+                                    <div class="robot-text-title-wrap">
+                                        <h3>Welcome to our examination page!</h3>
+                                    </div>
+                                    <div class="robot-text-content">
+                                        <p>
+                                            By clicking the following button, you will experience a high level, interview-based, examination. <br/>
+                                            Don't worry, this is just for fun! We will process your answers on a ML algorithm and respond back the results!
+                                        </p>
+                                    </div>
+                                    <div class="robot-btn-wrap">
+                                        <a href=""
+                                           class="btn-mid btn-gray"
+                                           id="start-chatbot-а"
+                                           data-title="begin"
+                                           onclick="(function() { window._quesUrl = window._quesUrl + '?type=beginner'; })()">
+                                            Beginner
+                                        </a>
+                                    </div>
+                                    <div class="robot-btn-wrap">
+                                        <a href=""
+                                           class="btn-mid btn-gray"
+                                           id="start-chatbot"
+                                           data-title="begin"
+                                           onclick="(function() { window._quesUrl = window._quesUrl + '?type=professional'; })()">
+                                            Professional
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="chatbot-page" id="chatbot-page">
+                                    <div class="soge-young-chatbot" data-url="./Click/SaveResults">
+                                        <div class="soge-question">
+                                            <div></div>
+                                        </div>
+                                        <div class="soge-answer"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

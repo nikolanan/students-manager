@@ -1,0 +1,32 @@
+version: "3.3"
+
+services:
+
+    data:
+        container_name: sqlserver
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports: 
+            - "1433:1433"
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=yourStrongPassword12!@
+        volumes: 
+            - sqldata:/var/opt/mssql 
+        networks: 
+            - tests-network
+            
+    studentsmanager.tests:
+        container_name: studentsmanagertests
+        build:
+            context: .
+            dockerfile: StudentsManager.Tests/Dockerfile    
+        networks: 
+            - tests-network
+        depends_on:
+            - data    
+
+networks:
+    tests-network:
+
+volumes:
+    sqldata:            

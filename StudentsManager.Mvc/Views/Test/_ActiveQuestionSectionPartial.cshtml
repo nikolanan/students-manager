@@ -1,0 +1,64 @@
+﻿@model TestQuestionView
+@if (Model.Options.First().IsTextOnly)
+{
+    <div class="question active section-test-layout-question text-question">
+        <div class="section-test-layout-title medium">
+            @Model.Description
+        </div>
+        <div class="section-test-layout-answer cf">
+            @for (var q = 0; q < Model.Options.Count; q++)
+            {
+                <div class="answer question-item-onlyText">
+                    <label class="container">
+                        <input type="radio"
+                               data-answer="@(q + 1)"
+                               data-question="@Model.Options[q].QuestionNumber"
+                               name="question-@Model.Options[q].QuestionNumber"
+                               value="@Model.Options[q].ResultValue"
+                               onclick="RegisterUserAnswer('@Model.Options[q].Id')">
+                        <span class="only-text-content">
+                            <span class="only-text-content-wrap">
+                                <span class="checkmark"></span>
+                                <span class="question-item-txt">
+                                    <span>
+                                        @Model.Options[q].Description
+                                    </span>
+                                </span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="question active section-test-layout-question images-question">
+        <div class="section-test-layout-title medium">
+            @Model.Description
+        </div>
+        <div class="section-test-layout-answer cf">
+            @for (var q = 0; q < Model.Options.Count; q++)
+            {
+                <div class="answer question-item-img">
+                    <h3 class="new-test-title">
+                        @Model.Options[q].Description
+                    </h3>
+                    <label class="container">
+                        <input
+                            type="radio"
+                            data-answer="@(q + 1)"
+                            data-question="1"
+                            name="question-1"
+                            value="@Model.Options[q].Description"
+                            onclick="RegisterUserAnswer('@Model.Options[q].Id')">
+                        <img src="@Model.Options[q].Base64Image"
+                             class="responsive question-item-bckg"
+                             alt="@Model.Options[q].ResultValue">
+                    </label>
+                </div>
+            }
+        </div>
+    </div>
+}

@@ -1,0 +1,58 @@
+﻿@model UserTopicResult
+@{
+    ViewData["Title"] = "Резултат";
+}
+
+
+<div class="total-wrap-content">
+    <section class="section">
+        <div class="chat-bot-section fh anim-block">
+            <div class="section-box">
+                <div class="intro-test-txt center">
+                    <div class="image-item anim-elem top">
+                        <div class="robot-image">
+                            <img src="https://i.pinimg.com/originals/e4/84/ab/e484abfc94e6f0eaa7056b729ca31c40.jpg"
+                                 alt="wizard"
+                                 class="template-image">
+                        </div>
+                    </div>
+                    <div class="intro-test-txt-box white-box center anim-elem top delay-02">
+                        @if (Model == null)
+                        {
+                            <div class="addition-txt-box">
+                                <span class="p-huge lightGrey addition-txt">Няма резултати</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="addition-txt-box">
+                                <span class="p-huge lightGrey addition-txt">Резултат:</span>
+                            </div>
+                            <div class="wrap-txt">
+                                <h3 class="title-big black">
+                                    @Model.Topic.Description -
+                                    <strong class="red">@Model.Score</strong> точки.
+                                </h3>
+                                <p class="p-small">
+                                    @if (Model.Score == 0)
+                                    {
+                                        <span>Нищо, другият път по-добре!</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Машина!</span>
+                                    }
+                                </p>
+                                <div class="curve-box">
+                                    <a asp-controller="Home" asp-action="Index" class="btn-big btn-gray">
+                                        Текущ контрол
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
