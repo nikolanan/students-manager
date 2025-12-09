@@ -1,2 +1,2 @@
 #!/bin/bash
-docker-compose up -d
+docker compose -f docker-compose.yml -f docker-compose.override.yml -p studentsmanager up -d
