@@ -1,42 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
-using StudentsManager.Mvc.Domain.Inputs.Forum;
-using StudentsManager.Mvc.Services.Auth;
 using StudentsManager.Mvc.Services.Forum;
 
 namespace StudentsManager.Mvc.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SlidoController : ControllerBase
+    public class SlidoController(IForumService service) : ControllerBase
     {
-        private readonly IForumService _service;
-
-        public SlidoController(IForumService service)
+        // GET: api/slido/questions?limit=20&skip=0
+        [HttpGet("questions")]
+        public async Task<IActionResult> GetQuestions([FromQuery] int limit, [FromQuery] int skip)
         {
-            _service = service;
-        }
-
-        // GET: api/Slido/questions/20/0
-        [HttpGet("questions/{limit:int}/{skip:int}")]
-        public async Task<IActionResult> GetQuestions([FromRoute] int limit, [FromRoute] int skip)
-        {
-            var result = await _service.GetAsync(limit, skip);
+            var result = await service.GetSlidoQuestionsAsync(limit, skip);
             return Ok(result);
         }
 
-        // POST: api/Slido/question
+        // POST: api/slido/question
         [HttpPost("question")]
         public async Task<IActionResult> PostQuestion([FromBody] QuestionInput input)
         {
             if (string.IsNullOrWhiteSpace(input.Question))
                 return BadRequest("Question cannot be empty");
 
-            await _service.SaveQuestionAsync(
+            await service.SaveQuestionAsync(
                 input.Question,
                 Guid.Parse("1eac9820-5e6e-4d10-6e94-08de36f40f78"));
 
             return Ok("Question posted successfully");
         }
     }
+
     public record struct QuestionInput(string Question);
 }
