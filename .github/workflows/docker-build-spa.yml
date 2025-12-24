@@ -6,11 +6,6 @@ on:
       - main
     paths:
       - 'StudentsManager.Spa/**'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'StudentsManager.Spa/**'
   workflow_dispatch:
 
 env:
@@ -39,9 +34,7 @@ jobs:
         with:
           images: ${{ env.DOCKER_IMAGE }}
           tags: |
-            type=ref,event=branch
-            type=sha,prefix=
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
