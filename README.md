@@ -20,6 +20,8 @@ A web application built on .NET, React, MSSQL, Azure, and OpenAI, designed to ma
 
 [![CodeFactor](https://www.codefactor.io/repository/github/profjordanov/students-manager/badge)](https://www.codefactor.io/repository/github/profjordanov/students-manager)
 
+[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=profjordanov_students-manager)
+
 ## MVC Frontend (main.js + chatbot)
 
 ### main.js
