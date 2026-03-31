@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using StudentsManager.Mvc.Domain.Entities;
 using StudentsManager.Mvc.Persistence;
 
 namespace StudentsManager.Mvc.Controllers;
@@ -19,4 +21,30 @@ public class ChatbotController(ManagerDbContext managerDbContext) : ControllerBa
         return Ok(result);
     }
 
+    // POST: api/chatbot/examination-answers
+    [HttpPost("examination-answers")]
+    public async Task<IActionResult> Post([FromBody] ChatbotExaminationInput input)
+    {
+        if (input.Answers.Length == 0)
+            return BadRequest("Answers cannot be empty.");
+
+        var entity = new ExaminationAnswer
+        {
+            Id = Guid.NewGuid(),
+            UserId = input.UserId,
+            CreatedOn = DateTime.UtcNow,
+            Result = JsonConvert.SerializeObject(input.Answers),
+            ContentType = "chatbot",
+            WasSuccessfullyProcessed = true
+        };
+
+        await managerDbContext.AddAsync(entity);
+        await managerDbContext.SaveChangesAsync();
+
+        return Ok(entity);
+    }
 }
+
+public record ChatbotAnswerItem(string QuestionId, string QuestionText, string Answer);
+
+public record ChatbotExaminationInput(Guid UserId, ChatbotAnswerItem[] Answers);
