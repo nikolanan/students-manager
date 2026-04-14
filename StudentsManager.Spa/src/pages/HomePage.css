@@ -1,0 +1,172 @@
+/* Layout & Container */
+.hp-container {
+    position: relative;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #000;
+    overflow-x: hidden;
+}
+
+.matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.hp-section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 10%;
+    text-align: center;
+}
+
+/* 1. Hero Section */
+.hp-hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10%;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-title {
+    font-size: 4rem;
+    line-height: 1.1;
+    text-align: left;
+}
+
+.hero-title span {
+    color: #00ff41;
+    text-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: #ccc;
+    margin-top: 20px;
+    text-align: left;
+}
+
+/* Robot Animation */
+.robot-container {
+    width: 40%;
+}
+
+.robot-anim {
+    width: 100%;
+    height: auto;
+    animation: slideInRight 1.2s ease-out forwards, hoverFloat 3s ease-in-out infinite 1.2s;
+    filter: drop-shadow(0 0 20px rgba(0, 255, 65, 0.2));
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes hoverFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* 2. Dashboard Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.progress-bar {
+    background: #333;
+    height: 10px;
+    border-radius: 5px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #00ff41;
+    box-shadow: 0 0 10px #00ff41;
+}
+
+/* 4. Daily Challenge */
+.challenge-box {
+    background: rgba(0, 255, 65, 0.05);
+    border: 2px solid #00ff41;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.challenge-snippet {
+    display: block;
+    background: #111;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    color: #00ff41;
+}
+
+/* Buttons */
+.hp-btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #00ff41;
+    color: black;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.hp-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+}
+
+.cta-main-btn {
+    padding: 20px 50px;
+    font-size: 1.5rem;
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 50px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 30px;
+}
+
+.cta-main-btn:hover {
+    background: #00ff41;
+    transform: translateY(-5px);
+}
+
+/* Final Section */
+.hp-cta {
+    padding: 100px 10%;
+    background: linear-gradient(to bottom, transparent, rgba(0, 255, 65, 0.1));
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+}
