@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { baseUrl } from "../services/apiConfig";
 
 export default function SlidoPage() {
   // const { isLoggedIn, userId } = useAuth();
@@ -8,85 +9,77 @@ export default function SlidoPage() {
   const isLoggedIn = true;
   const userId = "1eac9820-5e6e-4d10-6e94-08de36f40f78";
 
-  // Initial dummy data for demonstration
-  const [forumQuestions, setForumQuestions] = useState([
-    {
-      id: 1,
-      description: "How can I improve my C# skills?",
-      comments: [
-        { id: 101, description: "Practice every day and build projects!" },
-        { id: 102, description: "Check out the official documentation." },
-      ],
-    },
-    {
-      id: 2,
-      description: "What's the best way to learn React?",
-      comments: [{ id: 201, description: "Start with the official tutorial." }],
-    },
-    {
-      id: 3,
-      description: "Any tips for MSSQL performance tuning?",
-      comments: [{ id: 301, description: "Look at execution plans and indexing." }],
-    },
-    {
-      id: 4,
-      description: "How do I deploy a .NET app to Azure?",
-      comments: [{ id: 401, description: "Use GitHub Actions or Azure DevOps." }],
-    },
-  ]);
+  const [forumQuestions, setForumQuestions] = useState([]);
 
   const [newQuestion, setNewQuestion] = useState("");
   const [newComments, setNewComments] = useState({}); // Mapping questionId -> commentDescription
 
   // Placeholder for backend data fetching
+  // GET заявка към API — зарежда всички въпроси при отваряне на страницата
   useEffect(() => {
     // TODO: Fetch questions from backend:
     // GET https://students-manager-dev.azurewebsites.net/api/slido?limit=20&skip=0
     // Update forumQuestions state with result
-    console.log("Effect to fetch forum questions would trigger here.");
-  }, []);
+
+    // Изпращаме GET заявка към /api/slido с параметри за максимален брой резултати
+    fetch(`${baseUrl}/slido?limit=20&skip=0`)
+      .then((res) => res.json()) // Преобразуваме отговора в JSON
+      .then((data) => {
+        // Преобразуваме данните от API формат към вътрешния формат на компонента
+        const mapped = data.map((q) => ({
+          id: q.forumQuestionId,                // ID на въпроса
+          description: q.forumQuestionDescription, // Текст на въпроса
+          // Коментарите идват като масив от стрингове — превръщаме ги в обекти с id и description
+          comments: (q.comments ?? []).map((text, i) => ({ id: i, description: text })),
+        }));
+        setForumQuestions(mapped); // Записваме въпросите в state-а
+      })
+      .catch((err) => console.error("Failed to fetch forum questions", err));
+  }, []); // Празен масив — изпълнява се само веднъж при зареждане
 
   const handleQuestionSubmit = (e) => {
-    e.preventDefault();
-    if (!newQuestion.trim()) return;
+    e.preventDefault(); // Спираме стандартното презареждане на формата
+    if (!newQuestion.trim()) return; // Не изпращаме ако полето е празно
 
     // TODO: Post question to backend:
     // POST https://students-manager-dev.azurewebsites.net/api/slido/question
     // Body: { question: newQuestion }
 
-    const tempId = Math.floor(Math.random() * 10000);
-    const questionObj = {
-      id: tempId,
-      description: newQuestion,
-      comments: [],
-    };
-
-    setForumQuestions([questionObj, ...forumQuestions]);
-    setNewQuestion("");
-    console.log("Post question logic would happen here.");
+    // POST заявка към /api/slido/question — създава нов въпрос в базата
+    fetch(`${baseUrl}/slido/question`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }, // Указваме че изпращаме JSON
+      body: JSON.stringify({ question: newQuestion }), // Тялото на заявката
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to post question");
+        const tempId = Math.floor(Math.random() * 10000); // Временно ID до презареждане
+        // Добавяме въпроса оптимистично в началото на списъка без да чакаме нов GET
+        setForumQuestions([{ id: tempId, description: newQuestion, comments: [] }, ...forumQuestions]);
+        setNewQuestion(""); // Изчистваме полето
+      })
+      .catch((err) => console.error(err));
   };
 
   const handleCommentSubmit = (questionId) => {
     const commentText = newComments[questionId];
     if (!commentText || !commentText.trim()) return;
 
-    // TODO: Post comment to backend:
-    // POST https://students-manager-dev.azurewebsites.net/api/slido/comment
-    // Body: { forumQuestionId: questionId, description: commentText }
-
-    const updatedQuestions = forumQuestions.map((q) => {
-      if (q.id === questionId) {
-        return {
-          ...q,
-          comments: [...q.comments, { id: Math.random(), description: commentText }],
-        };
-      }
-      return q;
-    });
-
-    setForumQuestions(updatedQuestions);
-    setNewComments({ ...newComments, [questionId]: "" });
-    console.log(`Post comment logic for question ${questionId} would happen here.`);
+    fetch(`${baseUrl}/slido/comment`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ forumQuestionId: questionId, description: commentText }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to post comment");
+        setForumQuestions(forumQuestions.map((q) =>
+          q.id === questionId
+            ? { ...q, comments: [...q.comments, { id: Math.random(), description: commentText }] }
+            : q
+        ));
+        setNewComments({ ...newComments, [questionId]: "" });
+      })
+      .catch((err) => console.error(err));
   };
 
   const handleCommentChange = (questionId, text) => {
