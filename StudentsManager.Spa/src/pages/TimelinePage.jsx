@@ -3,12 +3,12 @@ import { getUserEvents, createEvent, logGeoEvent } from '../services/eventsServi
 import { useAuth } from '../context/AuthContext';
 
 const eventTypeMeta = [
-  { key: 'quiz', label: 'Quiz', icon: '🧠', color: '#7c5cff' },
-  { key: 'chatbot', label: 'Chatbot', icon: '🤖', color: '#ff8c42' },
-  { key: 'profile', label: 'Profile', icon: '👤', color: '#00c2a0' },
-  { key: 'achievement', label: 'Achievement', icon: '🏆', color: '#ffd166' },
-  { key: 'geo', label: 'Geo', icon: '📍', color: '#0096c7' },
-  { key: 'timeline', label: 'Milestone', icon: '✨', color: '#8e44ad' },
+  { key: 'quiz', label: 'Quiz', icon: '', color: '#7c5cff' },
+  { key: 'chatbot', label: 'Chatbot', icon: '', color: '#ff8c42' },
+  { key: 'profile', label: 'Profile', icon: '', color: '#00c2a0' },
+  { key: 'achievement', label: 'Achievement', icon: '', color: '#ffd166' },
+  { key: 'geo', label: 'Geo', icon: '', color: '#0096c7' },
+  { key: 'timeline', label: 'Milestone', icon: '', color: '#8e44ad' },
 ];
 
 const getEventMeta = (type) => {
@@ -33,7 +33,7 @@ export default function TimelinePage() {
   useEffect(() => {
     if (userId) {
       loadEvents();
-      const interval = setInterval(loadEvents, 10000); // Refresh every 10 seconds
+      const interval = setInterval(loadEvents, 60000); // Refresh every 60 seconds
       return () => clearInterval(interval);
     }
   }, [userId]);
@@ -48,14 +48,27 @@ export default function TimelinePage() {
     }
   };
 
+  
+  const normalizeTimestampString = (timestamp) => {
+    if (!timestamp) return null;
+    if (typeof timestamp !== 'string') return timestamp;
+
+    const hasTimezone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(timestamp);
+    if (hasTimezone) return timestamp;
+
+    const bareIsoPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?$/;
+    return bareIsoPattern.test(timestamp) ? `${timestamp}Z` : timestamp;
+  };
+
   const normalizeEvent = (event) => ({
     ...event,
     type: event.type ?? event.Type,
-    timestamp:
+    timestamp: normalizeTimestampString(
       event.timestamp ??
-      event.Timestamp ??
-      event.datetimeUtc ??
-      event.DatetimeUtc,
+        event.Timestamp ??
+        event.datetimeUtc ??
+        event.DatetimeUtc
+    ),
     data: parseEventData(event.data ?? event.Data),
   });
 
@@ -113,8 +126,6 @@ export default function TimelinePage() {
 
     return JSON.stringify(eventData, null, 2);
   };
-
-  const getIcon = (type) => getEventMeta(type)?.icon ?? '📝';
 
   const getCardColor = (type) => getEventMeta(type)?.color ?? '#64748b';
 
@@ -179,7 +190,7 @@ export default function TimelinePage() {
 
   return (
     <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto' }}>
-      <h1>📊 Interactive Timeline</h1>
+      <h1>Interactive Timeline</h1>
       {lastUpdate && (
         <p style={{ fontSize: '12px', color: 'gray' }}>
           Last updated: {lastUpdate.toLocaleTimeString()}
@@ -256,7 +267,7 @@ export default function TimelinePage() {
             cursor: loading ? 'not-allowed' : 'pointer',
           }}
         >
-          🔄 Refresh
+          Refresh
         </button>
 
         <button
@@ -271,7 +282,7 @@ export default function TimelinePage() {
             cursor: loggingLocation ? 'not-allowed' : 'pointer',
           }}
         >
-          📍 {loggingLocation ? 'Logging location…' : 'Log current location'}
+          {loggingLocation ? 'Logging location…' : 'Log current location'}
         </button>
 
       </div>
@@ -292,7 +303,7 @@ export default function TimelinePage() {
           border: '1px solid #e2e8f0',
         }}
       >
-        <div style={{ fontWeight: '700', marginBottom: '10px' }}>✨ Add a personalized milestone</div>
+        <div style={{ fontWeight: '700', marginBottom: '10px' }}>Add a personalized milestone</div>
         <div style={{ display: 'grid', gap: '12px' }}>
           <select
             value={milestoneType}
@@ -342,7 +353,7 @@ export default function TimelinePage() {
       {loading && <p>Loading events…</p>}
 
       {!loading && events.length === 0 && (
-        <p>No events yet. Start exploring the app to see your timeline grow 🚀</p>
+        <p>No events yet. Start exploring the app to see your timeline grow.</p>
       )}
 
       {!loading && events.length > 0 && (
@@ -378,7 +389,6 @@ export default function TimelinePage() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'center' }}>
                   <div>
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', fontSize: '18px', fontWeight: '700' }}>
-                      <span>{getIcon(event.type)}</span>
                       <span>{label}</span>
                     </div>
                     <div style={{ marginTop: '6px', fontSize: '13px', color: '#64748b' }}>
