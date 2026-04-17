@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { useAuth } from '../../context/AuthContext';
 import { getExaminationAnswers, getChatSessions } from '../../services/chatbotService';
 
@@ -15,7 +16,6 @@ function ChatbotResults() {
 
     useEffect(() => {
         if (!userId) return;
-
         getChatSessions(userId)
             .then((data) => setSessions(Array.isArray(data) ? data : []))
             .catch((err) => setErrorSessions(err?.response?.data?.message || 'Грешка при зареждане на сесиите.'))
@@ -24,7 +24,6 @@ function ChatbotResults() {
 
     useEffect(() => {
         if (!userId) return;
-
         getExaminationAnswers(userId)
             .then((data) => setExaminationAnswers(Array.isArray(data) ? data : []))
             .catch((err) => setErrorExam(err?.response?.data?.message || 'Грешка при зареждане на изпитните отговори.'))
@@ -45,7 +44,7 @@ function ChatbotResults() {
     return (
         <div className="soge-results">
 
-            {/* ══════════════ EXAMINATION ANSWERS ══════════════ */}
+            {/* ══ EXAMINATION ANSWERS ══ */}
             <section className="soge-results-section">
                 <div className="soge-results-header">
                     <h2>📋 Отговори от изпита</h2>
@@ -54,49 +53,45 @@ function ChatbotResults() {
                     </Link>
                 </div>
 
-                {loadingExam && (
-                    <p className="soge-results-loading">Зареждане на изпитните отговори…</p>
-                )}
-
-                {errorExam && (
-                    <p className="chatbot-error" role="alert">{errorExam}</p>
-                )}
-
+                {loadingExam && <p className="soge-results-loading">Зареждане…</p>}
+                {errorExam && <p className="chatbot-error" role="alert">{errorExam}</p>}
                 {!loadingExam && !errorExam && examinationAnswers.length === 0 && (
                     <p className="soge-results-empty">Все още нямаш записани изпитни отговори.</p>
                 )}
-
                 {!loadingExam && examinationAnswers.map((session, idx) => (
-                    <ExaminationCard key={idx} session={session} index={idx} />
+                    <ExaminationCard
+                        key={session.sessionId || `exam-${idx}`}
+                        session={session}
+                        index={idx}
+                    />
                 ))}
             </section>
 
-            {/* ══════════════ CHAT SESSIONS ══════════════ */}
+            {/* ══ CHAT SESSIONS ══ */}
             <section className="soge-results-section" style={{ marginTop: 40 }}>
                 <div className="soge-results-header">
                     <h2>💬 История на разговорите с AI</h2>
                 </div>
 
-                {loadingSessions && (
-                    <p className="soge-results-loading">Зареждане на разговорите…</p>
-                )}
-
-                {errorSessions && (
-                    <p className="chatbot-error" role="alert">{errorSessions}</p>
-                )}
-
+                {loadingSessions && <p className="soge-results-loading">Зареждане…</p>}
+                {errorSessions && <p className="chatbot-error" role="alert">{errorSessions}</p>}
                 {!loadingSessions && !errorSessions && sessions.length === 0 && (
                     <p className="soge-results-empty">Все още нямаш записани разговори.</p>
                 )}
-
                 {!loadingSessions && sessions.map((session, idx) => (
-                    <ChatSessionCard key={idx} session={session} index={idx} isLatest={idx === sessions.length - 1} />
+                    <ChatSessionCard
+                        key={session.sessionId || `session-${idx}`}
+                        session={session}
+                        index={idx}
+                        isLatest={idx === sessions.length - 1}
+                    />
                 ))}
             </section>
         </div>
     );
 }
 
+// ── ExaminationCard ────────────────────────────────────────────────────────
 function ExaminationCard({ session, index }) {
     const date = session.timestamp
         ? new Date(session.timestamp).toLocaleString('bg-BG')
@@ -118,15 +113,14 @@ function ExaminationCard({ session, index }) {
                     <p className="soge-result-fallback">Няма записани отговори за тази сесия.</p>
                 )}
                 <div className="soge-result-qa">
-                    {answers.map((item, i) => (
-                        <div key={i} className="soge-result-qa-item">
+                    {answers.map((item) => (
+                        <div key={item.id || item.question || item.content} className="soge-result-qa-item">
                             {item.question && (
                                 <span className="soge-result-qa-q">❓ {item.question}</span>
                             )}
                             {item.answer && (
                                 <span className="soge-result-qa-a">✏️ {item.answer}</span>
                             )}
-                            {/* Fallback for message-style format */}
                             {!item.question && item.role && (
                                 <span className={`soge-result-qa-${item.role === 'user' ? 'q' : 'a'}`}>
                                     {item.role === 'user' ? '👤' : '🤖'} {item.content}
@@ -140,7 +134,17 @@ function ExaminationCard({ session, index }) {
     );
 }
 
+ExaminationCard.propTypes = {
+    session: PropTypes.shape({
+        sessionId: PropTypes.string,
+        timestamp: PropTypes.string,
+        answers: PropTypes.array,
+        messages: PropTypes.array,
+    }).isRequired,
+    index: PropTypes.number.isRequired,
+};
 
+// ── ChatSessionCard ────────────────────────────────────────────────────────
 function ChatSessionCard({ session, index, isLatest }) {
     const date = session.timestamp
         ? new Date(session.timestamp).toLocaleString('bg-BG')
@@ -168,9 +172,9 @@ function ChatSessionCard({ session, index, isLatest }) {
                 <div className="chatbot-session-messages">
                     {messages
                         .filter((m) => m.role !== 'system')
-                        .map((m, i) => (
+                        .map((m) => (
                             <div
-                                key={i}
+                                key={m.id || `${m.role}-${m.content.slice(0, 12)}`}
                                 className={`chatbot-session-msg chatbot-session-msg--${m.role}`}
                             >
                                 <span className="chatbot-session-msg__icon" aria-hidden="true">
@@ -184,5 +188,15 @@ function ChatSessionCard({ session, index, isLatest }) {
         </details>
     );
 }
+
+ChatSessionCard.propTypes = {
+    session: PropTypes.shape({
+        sessionId: PropTypes.string,
+        timestamp: PropTypes.string,
+        messages: PropTypes.array,
+    }).isRequired,
+    index: PropTypes.number.isRequired,
+    isLatest: PropTypes.bool.isRequired,
+};
 
 export default ChatbotResults;
