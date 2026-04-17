@@ -24,7 +24,7 @@ function Chatbot() {
     return (
         <div className="soge-young-chatbot chatbot-container">
 
-            {/* ── Context banner (shown when prior exam answers are loaded) ── */}
+            {/* Context banner */}
             {examinationContext && (
                 <div className="chatbot-context-banner" role="status">
                     <span className="chatbot-context-icon" aria-hidden="true">📋</span>
@@ -35,7 +35,7 @@ function Chatbot() {
                 </div>
             )}
 
-            {/* ── Guest notice ── */}
+            {/* Guest notice */}
             {!isLoggedIn && (
                 <div className="chatbot-guest-notice" role="alert">
                     <span>
@@ -45,19 +45,19 @@ function Chatbot() {
                 </div>
             )}
 
-            {/* ── Messages area ── */}
+            {/* Messages area */}
             <div
                 className="chatbot-messages"
                 role="log"
                 aria-label="Разговор с AI асистент"
                 aria-live="polite"
             >
-                {messages.map((msg, idx) => (
+                {messages.map((msg) => (
                     <ChatMessage
-                        key={idx}
+                        key={`${msg.role}-${msg.content.slice(0, 16)}-${messages.indexOf(msg)}`}
                         role={msg.role}
                         content={msg.content}
-                        isLatest={idx === messages.length - 1}
+                        isLatest={messages.indexOf(msg) === messages.length - 1}
                     />
                 ))}
 
@@ -70,7 +70,7 @@ function Chatbot() {
                     </div>
                 )}
 
-                {/* Error message */}
+                {/* Error */}
                 {error && (
                     <div className="chatbot-error" role="alert">
                         <span className="chatbot-error__icon" aria-hidden="true">⚠️</span>
@@ -78,7 +78,7 @@ function Chatbot() {
                     </div>
                 )}
 
-                {/* Saved indicator */}
+                {/* Saved */}
                 {sessionSaved && !isLoading && (
                     <div className="chatbot-saved" role="status" aria-live="polite">
                         ✓ Разговорът е записан
@@ -88,7 +88,7 @@ function Chatbot() {
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* ── Input area ── */}
+            {/* Input */}
             <ChatInput
                 value={inputValue}
                 onChange={setInputValue}
@@ -98,7 +98,7 @@ function Chatbot() {
                 inputRef={inputRef}
             />
 
-            {/* ── Footer actions ── */}
+            {/* Footer */}
             <div className="chatbot-footer">
                 <button
                     type="button"
