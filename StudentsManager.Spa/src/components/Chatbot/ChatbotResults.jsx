@@ -1,113 +1,187 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { getExaminationAnswers } from '../../services/chatbotService';
-import ChatbotResultCard from './ChatbotResultCard';
-
-function parseJson(jsonString) {
-    if (!jsonString) return null;
-    try {
-        return JSON.parse(jsonString);
-    } catch {
-        return null;
-    }
-}
+import { getExaminationAnswers, getChatSessions } from '../../services/chatbotService';
 
 function ChatbotResults() {
-    const { userId } = useAuth();
-    const [results, setResults] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
+    const { userId, isLoggedIn } = useAuth();
 
-    const fetchResults = useCallback(async () => {
+    const [sessions, setSessions] = useState([]);
+    const [examinationAnswers, setExaminationAnswers] = useState([]);
+    const [loadingSessions, setLoadingSessions] = useState(true);
+    const [loadingExam, setLoadingExam] = useState(true);
+    const [errorSessions, setErrorSessions] = useState(null);
+    const [errorExam, setErrorExam] = useState(null);
+
+    useEffect(() => {
         if (!userId) return;
-        setIsLoading(true);
-        setError('');
-        try {
-            const data = await getExaminationAnswers(userId);
-            const sorted = [...data].sort(
-                (a, b) => new Date(b.createdOn) - new Date(a.createdOn)
-            );
-            setResults(sorted);
-        } catch (err) {
-            const message =
-                err?.response?.data?.message ||
-                err?.response?.data ||
-                err?.message ||
-                'Failed to load results.';
-            setError(String(message));
-        } finally {
-            setIsLoading(false);
-        }
+
+        getChatSessions(userId)
+            .then((data) => setSessions(Array.isArray(data) ? data : []))
+            .catch((err) => setErrorSessions(err?.response?.data?.message || 'Грешка при зареждане на сесиите.'))
+            .finally(() => setLoadingSessions(false));
     }, [userId]);
 
     useEffect(() => {
-        fetchResults();
-    }, [fetchResults]);
+        if (!userId) return;
 
-    if (!userId) {
+        getExaminationAnswers(userId)
+            .then((data) => setExaminationAnswers(Array.isArray(data) ? data : []))
+            .catch((err) => setErrorExam(err?.response?.data?.message || 'Грешка при зареждане на изпитните отговори.'))
+            .finally(() => setLoadingExam(false));
+    }, [userId]);
+
+    if (!isLoggedIn) {
         return (
-            <div className="soge-results center">
-                <p>Please log in to view your results.</p>
+            <div className="soge-results-empty">
+                <p>Трябва да си влязъл в профила си, за да видиш резултатите.</p>
+                <Link to="/login" className="soge-btn soge-btn--primary" style={{ display: 'inline-block', marginTop: 16 }}>
+                    Вход
+                </Link>
             </div>
         );
     }
 
     return (
         <div className="soge-results">
-            <div className="soge-results-header">
-                <h2>Your Chatbot Results</h2>
-                <button
-                    type="button"
-                    className="soge-btn"
-                    onClick={fetchResults}
-                    disabled={isLoading}
-                >
-                    {isLoading ? 'Loading…' : 'Refresh'}
-                </button>
-            </div>
 
-            {isLoading && (
-                <div className="soge-results-loading center" aria-live="polite">
-                    Loading results…
+            {/* ══════════════ EXAMINATION ANSWERS ══════════════ */}
+            <section className="soge-results-section">
+                <div className="soge-results-header">
+                    <h2>📋 Отговори от изпита</h2>
+                    <Link to="/chatbot" className="soge-btn" style={{ fontSize: 13, padding: '8px 18px' }}>
+                        ← Обратно към чата
+                    </Link>
                 </div>
-            )}
 
-            {!isLoading && error && (
-                <p className="soge-error" role="alert">{error}</p>
-            )}
+                {loadingExam && (
+                    <p className="soge-results-loading">Зареждане на изпитните отговори…</p>
+                )}
 
-            {!isLoading && !error && results.length === 0 && (
-                <p className="soge-results-empty">No results found.</p>
-            )}
+                {errorExam && (
+                    <p className="chatbot-error" role="alert">{errorExam}</p>
+                )}
 
-            {!isLoading && results.length > 0 && (
-                <>
-                    <section aria-label="Latest result">
-                        <ChatbotResultCard
-                            {...results[0]}
-                            result={parseJson(results[0].result)}
-                            form={parseJson(results[0].form)}
-                            isLatest={true}
-                        />
-                    </section>
+                {!loadingExam && !errorExam && examinationAnswers.length === 0 && (
+                    <p className="soge-results-empty">Все още нямаш записани изпитни отговори.</p>
+                )}
 
-                    {results.length > 1 && (
-                        <section className="soge-result-history" aria-label="Previous results">
-                            <h3 className="soge-result-history-heading">History</h3>
-                            {results.slice(1).map((item, i) => (
-                                <ChatbotResultCard
-                                    key={item.id ?? i}
-                                    {...item}
-                                    result={parseJson(item.result)}
-                                    form={parseJson(item.form)}
-                                    isLatest={false}
-                                />
-                            ))}
-                        </section>
-                    )}
-                </>
-            )}
+                {!loadingExam && examinationAnswers.map((session, idx) => (
+                    <ExaminationCard key={idx} session={session} index={idx} />
+                ))}
+            </section>
+
+            {/* ══════════════ CHAT SESSIONS ══════════════ */}
+            <section className="soge-results-section" style={{ marginTop: 40 }}>
+                <div className="soge-results-header">
+                    <h2>💬 История на разговорите с AI</h2>
+                </div>
+
+                {loadingSessions && (
+                    <p className="soge-results-loading">Зареждане на разговорите…</p>
+                )}
+
+                {errorSessions && (
+                    <p className="chatbot-error" role="alert">{errorSessions}</p>
+                )}
+
+                {!loadingSessions && !errorSessions && sessions.length === 0 && (
+                    <p className="soge-results-empty">Все още нямаш записани разговори.</p>
+                )}
+
+                {!loadingSessions && sessions.map((session, idx) => (
+                    <ChatSessionCard key={idx} session={session} index={idx} isLatest={idx === sessions.length - 1} />
+                ))}
+            </section>
         </div>
+    );
+}
+
+function ExaminationCard({ session, index }) {
+    const date = session.timestamp
+        ? new Date(session.timestamp).toLocaleString('bg-BG')
+        : `Сесия ${index + 1}`;
+
+    const answers = Array.isArray(session.answers)
+        ? session.answers
+        : Array.isArray(session.messages)
+            ? session.messages
+            : [];
+
+    return (
+        <details className="soge-result-card" open={index === 0}>
+            <summary className="soge-result-history-toggle">
+                📄 Изпитна сесия — {date}
+            </summary>
+            <div className="soge-result-history-body">
+                {answers.length === 0 && (
+                    <p className="soge-result-fallback">Няма записани отговори за тази сесия.</p>
+                )}
+                <div className="soge-result-qa">
+                    {answers.map((item, i) => (
+                        <div key={i} className="soge-result-qa-item">
+                            {item.question && (
+                                <span className="soge-result-qa-q">❓ {item.question}</span>
+                            )}
+                            {item.answer && (
+                                <span className="soge-result-qa-a">✏️ {item.answer}</span>
+                            )}
+                            {/* Fallback for message-style format */}
+                            {!item.question && item.role && (
+                                <span className={`soge-result-qa-${item.role === 'user' ? 'q' : 'a'}`}>
+                                    {item.role === 'user' ? '👤' : '🤖'} {item.content}
+                                </span>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </details>
+    );
+}
+
+
+function ChatSessionCard({ session, index, isLatest }) {
+    const date = session.timestamp
+        ? new Date(session.timestamp).toLocaleString('bg-BG')
+        : `Сесия ${index + 1}`;
+
+    const messages = Array.isArray(session.messages) ? session.messages : [];
+    const userMessages = messages.filter((m) => m.role === 'user');
+    const assistantMessages = messages.filter((m) => m.role === 'assistant');
+
+    return (
+        <details
+            className={`soge-result-card${isLatest ? ' soge-result-card--latest' : ''}`}
+            open={isLatest}
+        >
+            <summary className="soge-result-history-toggle">
+                💬 Разговор — {date}
+                <span className="chatbot-session-meta">
+                    {userMessages.length} въпроса · {assistantMessages.length} отговора
+                </span>
+            </summary>
+            <div className="soge-result-history-body">
+                {messages.length === 0 && (
+                    <p className="soge-result-fallback">Празна сесия.</p>
+                )}
+                <div className="chatbot-session-messages">
+                    {messages
+                        .filter((m) => m.role !== 'system')
+                        .map((m, i) => (
+                            <div
+                                key={i}
+                                className={`chatbot-session-msg chatbot-session-msg--${m.role}`}
+                            >
+                                <span className="chatbot-session-msg__icon" aria-hidden="true">
+                                    {m.role === 'user' ? '👤' : '🤖'}
+                                </span>
+                                <p className="chatbot-session-msg__text">{m.content}</p>
+                            </div>
+                        ))}
+                </div>
+            </div>
+        </details>
     );
 }
 
