@@ -91,17 +91,63 @@ function ChatbotResults() {
     );
 }
 
+// ── helpers ────────────────────────────────────────────────────────────────
+
+function resolveAnswers(session) {
+    if (Array.isArray(session.answers)) return session.answers;
+    if (Array.isArray(session.messages)) return session.messages;
+    return [];
+}
+
+function getAnswerItemKey(item) {
+    if (item.id) return item.id;
+    if (item.question) return item.question;
+    return item.content;
+}
+
+function AnswerItem({ item }) {
+    if (item.question) {
+        return (
+            <div className="soge-result-qa-item">
+                <span className="soge-result-qa-q">❓ {item.question}</span>
+                {item.answer && (
+                    <span className="soge-result-qa-a">✏️ {item.answer}</span>
+                )}
+            </div>
+        );
+    }
+
+    if (item.role) {
+        const isUser = item.role === 'user';
+        const className = isUser ? 'soge-result-qa-q' : 'soge-result-qa-a';
+        const icon = isUser ? '👤' : '🤖';
+        return (
+            <div className="soge-result-qa-item">
+                <span className={className}>{icon} {item.content}</span>
+            </div>
+        );
+    }
+
+    return null;
+}
+
+AnswerItem.propTypes = {
+    item: PropTypes.shape({
+        id: PropTypes.string,
+        question: PropTypes.string,
+        answer: PropTypes.string,
+        role: PropTypes.string,
+        content: PropTypes.string,
+    }).isRequired,
+};
+
 // ── ExaminationCard ────────────────────────────────────────────────────────
 function ExaminationCard({ session, index }) {
     const date = session.timestamp
         ? new Date(session.timestamp).toLocaleString('bg-BG')
         : `Сесия ${index + 1}`;
 
-    const answers = Array.isArray(session.answers)
-        ? session.answers
-        : Array.isArray(session.messages)
-            ? session.messages
-            : [];
+    const answers = resolveAnswers(session);
 
     return (
         <details className="soge-result-card" open={index === 0}>
@@ -114,19 +160,7 @@ function ExaminationCard({ session, index }) {
                 )}
                 <div className="soge-result-qa">
                     {answers.map((item) => (
-                        <div key={item.id || item.question || item.content} className="soge-result-qa-item">
-                            {item.question && (
-                                <span className="soge-result-qa-q">❓ {item.question}</span>
-                            )}
-                            {item.answer && (
-                                <span className="soge-result-qa-a">✏️ {item.answer}</span>
-                            )}
-                            {!item.question && item.role && (
-                                <span className={`soge-result-qa-${item.role === 'user' ? 'q' : 'a'}`}>
-                                    {item.role === 'user' ? '👤' : '🤖'} {item.content}
-                                </span>
-                            )}
-                        </div>
+                        <AnswerItem key={getAnswerItemKey(item)} item={item} />
                     ))}
                 </div>
             </div>
